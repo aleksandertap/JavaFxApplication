@@ -13,22 +13,22 @@ public class JavaFxApplication extends Application {
 
     @Override
     public void start(Stage window) {
-        BorderPane layout = new BorderPane();
+        TextField textField = new TextField();
+        Label label = new Label();
+        Button button = new Button("Update");
 
-        layout.setCenter(new TextArea(""));
-
-        HBox texts = new HBox();
-        texts.setSpacing(10);
-        texts.getChildren().add(new Label("Letters: 0"));
-        texts.getChildren().add(new Label("Words: 0"));
-        texts.getChildren().add(new Label("The longest word is:"));
-
-        layout.setBottom(texts);
+        button.setOnAction((event) -> {
+            label.setText(textField.getText());
+        });
 
 
-        Scene view = new Scene(layout);
+        VBox componentGroup = new VBox();
+        componentGroup.setSpacing(20);
+        componentGroup.getChildren().addAll(textField, button, label);
 
-        window.setScene(view);
+        Scene viewport = new Scene(componentGroup);
+
+        window.setScene(viewport);
         window.show();
     }
 
