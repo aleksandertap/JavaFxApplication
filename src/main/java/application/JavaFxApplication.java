@@ -9,24 +9,41 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
+import java.util.Arrays;
+
 public class JavaFxApplication extends Application {
 
     @Override
     public void start(Stage window) {
-        TextField textField = new TextField();
-        Label label = new Label();
-        Button button = new Button("Update");
+        BorderPane layout = new BorderPane();
 
-        button.setOnAction((event) -> {
-            label.setText(textField.getText());
+        HBox texts = new HBox();
+        texts.setSpacing(10);
+
+        Label lettersInText = new Label("Letters: 0");
+        Label wordsInText  = new Label("Words: 0");
+        Label longestWord = new Label("Longest word is: ");
+        texts.getChildren().add(lettersInText);
+        texts.getChildren().add(wordsInText);
+        texts.getChildren().add(longestWord);
+
+        TextArea textArea = new TextArea("");
+        textArea.textProperty().addListener((observable, oldValue, newValue) -> {
+            int characters = newValue.length();
+            String[] parts = newValue.split(" ");
+            int words = parts.length;
+            String longest = Arrays.stream(parts).sorted((s1, s2) -> s2.length() - s1.length()).findFirst().get();
+
+            lettersInText.setText("Letters: " + characters);
+            wordsInText.setText("Words: " + words);
+            longestWord.setText("Longest word is: " + longest);
         });
 
 
-        VBox componentGroup = new VBox();
-        componentGroup.setSpacing(20);
-        componentGroup.getChildren().addAll(textField, button, label);
+        layout.setCenter(textArea);
+        layout.setBottom(texts);
 
-        Scene viewport = new Scene(componentGroup);
+        Scene viewport = new Scene(layout);
 
         window.setScene(viewport);
         window.show();
